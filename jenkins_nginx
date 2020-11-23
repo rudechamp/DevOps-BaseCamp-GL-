@@ -7,9 +7,9 @@ pipeline {
         timestamps()
     }
     stages {
-        stage("Update apt") {
+        stage("Update") {
             steps {
-                sh 'ssh root@10.0.2.5 \'apt update\''
+                sh 'ssh root@10.0.2.5 \'sudo apt update\''
             }
         }
         stage("Install NGINX") {
@@ -17,14 +17,14 @@ pipeline {
                 sh 'ssh root@10.0.2.5 \'sudo apt install -y nginx\''
             }
         }
-        stage("Start NGNIX") {
+        stage("Systemctl Start NGNIX") {
             steps {
-                sh 'ssh root@10.0.2.5 \'systemctl start nginx\''
+                sh 'ssh root@10.0.2.5 \'sudo systemctl start nginx\''
             }
         }
-	stage ("Check NGINX status") {
+	stage ("Systemctl Status NGINX") {
 	    steps {
-		sh 'ssh root@10.0.2.5 \'systemctl status nginx\''
+		sh 'ssh root@10.0.2.5 \'sudo systemctl status nginx\''
 	    }
 	} 
 		
