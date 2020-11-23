@@ -1,0 +1,32 @@
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent {label 'master'}
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+    stages {
+        stage("Update apt") {
+            steps {
+                sh 'ssh root@10.0.2.5 \'apt update\''
+            }
+        }
+        stage("Install NGINX") {
+            steps {
+                sh 'ssh root@10.0.2.5 \'sudo apt install -y nginx\''
+            }
+        }
+        stage("Start NGNIX") {
+            steps {
+                sh 'ssh root@10.0.2.5 \'systemctl start nginx\''
+            }
+        }
+	stage ("Check NGINX status") {
+	    steps {
+		sh 'ssh root@10.0.2.5 \'systemctl status nginx\''
+	    }
+	} 
+		
+    }
+}
